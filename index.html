@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="Favicon.png" type="image/x-icon">
-    <title>Amina's Pip Calculator </title>
+    <title>Amina's | Pip Calculator</title>
     <style>
         * {
             margin: 0;
@@ -13,760 +12,714 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0d0f24 0%, #1a1c3b 100%);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #e0e6ed;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .container {
-            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 1400px;
             width: 100%;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .card {
+            background: #101225;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(138, 79, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 24px;
-            text-align: center;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8a4fff, #00d4ff, #8a4fff);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 60px rgba(138, 79, 255, 0.3),
+                        0 0 0 1px rgba(138, 79, 255, 0.4);
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
+        .card:hover::before {
+            opacity: 1;
         }
 
-        .content {
-            padding: 24px;
-        }
-
-        .section {
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #333;
+        .card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(138, 79, 255, 0.15);
+        }
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: #8a4fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8a4fff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .input-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .input-group {
-            margin-bottom: 16px;
+            position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #555;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #a8b2d1;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .label-with-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .info-icon {
-            cursor: help;
-            color: #667eea;
-            font-size: 16px;
-            position: relative;
-        }
-
-        .tooltip {
-            display: none;
-            position: absolute;
-            background: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            width: 220px;
-            z-index: 1000;
-            top: 24px;
-            left: 0;
-            line-height: 1.4;
-        }
-
-        .info-icon:hover .tooltip {
-            display: block;
-        }
-
-        input[type="number"],
-        input[type="text"],
-        select {
+        input[type="number"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.3s;
+            padding: 16px 18px;
+            background: rgba(26, 28, 59, 0.6);
+            border: 1px solid rgba(138, 79, 255, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            color: #e0e6ed;
+            transition: all 0.3s;
+            font-weight: 500;
         }
 
-        input[type="number"]:focus,
-        input[type="text"]:focus,
-        select:focus {
+        input[type="number"]::placeholder {
+            color: #4a5568;
+        }
+
+        input[type="number"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #8a4fff;
+            background: rgba(26, 28, 59, 0.9);
+            box-shadow: 0 0 0 4px rgba(138, 79, 255, 0.15),
+                        0 0 20px rgba(138, 79, 255, 0.2);
         }
 
-        .error {
-            border-color: #e74c3c !important;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 16px;
+        .lot-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
             margin-bottom: 12px;
         }
 
-        .radio-option {
+        .lot-btn {
+            padding: 14px;
+            background: rgba(26, 28, 59, 0.6);
+            border: 1px solid rgba(138, 79, 255, 0.2);
+            border-radius: 10px;
+            color: #a8b2d1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lot-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 79, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .lot-btn:hover::before {
+            left: 100%;
+        }
+
+        .lot-btn:hover {
+            border-color: #8a4fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(138, 79, 255, 0.3);
+        }
+
+        .lot-btn.active {
+            background: linear-gradient(135deg, #8a4fff, #6a3fd9);
+            color: white;
+            border-color: #8a4fff;
+            box-shadow: 0 4px 20px rgba(138, 79, 255, 0.4);
+        }
+
+        .results-section {
+            flex: 1;
             display: flex;
-            align-items: center;
-            gap: 6px;
+            flex-direction: column;
         }
 
-        .radio-option input[type="radio"] {
-            width: auto;
+        .signal-box {
+            background: linear-gradient(135deg, rgba(26, 28, 59, 0.95), rgba(16, 18, 37, 0.95));
+            border: 1px solid rgba(138, 79, 255, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
         }
 
-        .results {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 24px;
+        .signal-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138, 79, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
         }
 
-        .result-row {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .signal-header {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .signal-line {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid rgba(138, 79, 255, 0.1);
+            position: relative;
+            z-index: 1;
         }
 
-        .result-row:last-child {
+        .signal-line:last-of-type {
             border-bottom: none;
         }
 
-        .result-label {
-            font-weight: 500;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .result-value {
-            font-size: 16px;
+        .signal-label {
+            color: #a8b2d1;
             font-weight: 600;
-        }
-
-        .positive {
-            color: #27ae60;
-        }
-
-        .negative {
-            color: #e74c3c;
-        }
-
-        .neutral {
-            color: #333;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .signal-value {
+            color: #e0e6ed;
+            font-weight: 700;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .direction-buy {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .direction-sell {
+            color: #ff6b6b;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .risk-value {
+            color: #ff6b6b;
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .reward-value {
+            color: #00ff88;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(26, 28, 59, 0.6);
+            border: 1px solid rgba(138, 79, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px;
             transition: all 0.3s;
         }
 
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5568d3;
+        .stat-card:hover {
+            border-color: rgba(138, 79, 255, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 16px rgba(138, 79, 255, 0.2);
         }
 
-        .btn-secondary {
-            background: #e0e0e0;
-            color: #333;
+        .stat-label {
+            font-size: 11px;
+            color: #a8b2d1;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
         }
 
-        .btn-secondary:hover {
-            background: #d0d0d0;
-        }
-
-        .settings-toggle {
-            margin-top: 16px;
-            padding: 12px;
-            background: #fff3cd;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #ffc107;
-        }
-
-        .settings-content {
-            display: none;
-            margin-top: 12px;
-            padding: 16px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .settings-content.show {
-            display: block;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 12px;
-            border-radius: 8px;
-            color: #856404;
-            font-size: 13px;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .warning.show {
-            display: block;
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e0e6ed;
+            font-family: 'Courier New', monospace;
         }
 
         .copy-btn {
-            background: #667eea;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #8a4fff, #00d4ff);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 12px;
-            margin-top: 12px;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(138, 79, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
         }
 
         .copy-btn:hover {
-            background: #5568d3;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(138, 79, 255, 0.5);
         }
 
-        @media (max-width: 600px) {
-            .grid-2 {
+        .copy-btn:hover::before {
+            left: 100%;
+        }
+
+        .copy-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #4a5568;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            opacity: 0.3;
+            stroke: #8a4fff;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .lot-options {
                 grid-template-columns: 1fr;
             }
 
-            .header h1 {
-                font-size: 22px;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
-            .button-group {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
+            .card-title {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>💰 Amina's Pip Calculator</h1>
-            <p>XAUUSD (Gold) Position Calculator</p>
+        <!-- LEFT PANEL: TRADE SETUP -->
+        <div class="card">
+            <div class="card-header">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <div class="card-title">Trade Setup</div>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-group">
+                    <label>Entry Price</label>
+                    <input type="number" id="entryPrice" step="0.001" placeholder="2000.000">
+                </div>
+
+                <div class="input-group">
+                    <label>Stop Loss</label>
+                    <input type="number" id="stopLoss" step="0.001" placeholder="1995.000">
+                </div>
+
+                <div class="input-group">
+                    <label>Take Profit</label>
+                    <input type="number" id="takeProfit" step="0.001" placeholder="2010.000">
+                </div>
+
+                <div class="input-group">
+                    <label>Lot Size</label>
+                    <div class="lot-options">
+                        <button class="lot-btn active" onclick="selectLot(0.01)">0.01</button>
+                        <button class="lot-btn" onclick="selectLot(0.1)">0.1</button>
+                        <button class="lot-btn" onclick="selectLot('custom')">Custom</button>
+                    </div>
+                    <input type="number" id="customLot" step="0.01" placeholder="Enter custom lot" style="display: none;">
+                </div>
+
+                <div class="input-group">
+                    <label>Account Balance (Optional)</label>
+                    <input type="number" id="accountBalance" step="0.01" placeholder="10000.00">
+                </div>
+            </div>
         </div>
 
-        <div class="content">
-            <!-- Trade Setup Section -->
-            <div class="section">
-                <div class="section-title">📊 Trade Setup</div>
-
-                <div class="input-group">
-                    <label>Trade Type</label>
-                    <select id="tradeType">
-                        <option value="buy">Buy (Long)</option>
-                        <option value="sell">Sell (Short)</option>
-                    </select>
-                </div>
-
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>Entry Price ($)</label>
-                        <input type="number" id="entryPrice" step="0.01" placeholder="e.g., 2000.00">
-                        <span class="error-message" id="entryError">Enter a valid price</span>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Stop Loss ($)</label>
-                        <input type="number" id="stopLoss" step="0.01" placeholder="e.g., 1995.00">
-                        <span class="error-message" id="slError">Enter a valid SL</span>
-                    </div>
-                </div>
-
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>Take Profit ($)</label>
-                        <input type="number" id="takeProfit" step="0.01" placeholder="e.g., 2010.00">
-                        <span class="error-message" id="tpError">Enter a valid TP</span>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Account Balance ($) - Optional</label>
-                        <input type="number" id="accountBalance" step="0.01" placeholder="e.g., 10000">
-                    </div>
-                </div>
-
-                <div class="warning" id="validationWarning">
-                    ⚠️ Warning: Check your SL/TP levels. For Buy: SL should be below Entry, TP above. For Sell: TP below Entry, SL above.
-                </div>
+        <!-- RIGHT PANEL: SIGNAL & RESULTS -->
+        <div class="card">
+            <div class="card-header">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <div class="card-title">Signal & Results</div>
             </div>
-
-            <!-- Lot Size Section -->
-            <div class="section">
-                <div class="section-title">📦 Lot Size</div>
-                
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="lot001" name="lotSize" value="0.01" checked>
-                        <label for="lot001">0.01 (Micro)</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="lot01" name="lotSize" value="0.1">
-                        <label for="lot01">0.1 (Mini)</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="lotCustom" name="lotSize" value="custom">
-                        <label for="lotCustom">Custom</label>
+            
+            <div class="results-section" id="resultsContainer">
+                <div class="signal-box">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                    <div class="empty-state">
+                        Enter trade details to generate your signal...
                     </div>
                 </div>
-
-                <div class="input-group">
-                    <label>Custom Lot Size</label>
-                    <input type="number" id="customLot" step="0.01" placeholder="e.g., 0.05" disabled>
-                </div>
-            </div>
-
-            <!-- Advanced Settings -->
-            <div class="settings-toggle" onclick="toggleSettings()">
-                <span style="font-weight: 500;">⚙️ Advanced Settings</span>
-                <span id="settingsArrow">▼</span>
-            </div>
-            <div class="settings-content" id="settingsContent">
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label class="label-with-info">
-                            Lot Multiplier (oz per lot)
-                            <span class="info-icon">ℹ️
-                                <span class="tooltip">Default: 100 troy ounces per 1 standard lot. Change this if your broker uses different contract specifications.</span>
-                            </span>
-                        </label>
-                        <input type="number" id="lotMultiplier" value="100" step="1">
-                    </div>
-
-                    <div class="input-group">
-                        <label class="label-with-info">
-                            Pip Size (Price increment)
-                            <span class="info-icon">ℹ️
-                                <span class="tooltip">Default: 0.01 (means $1 change = 100 pips). Some brokers use 0.1 as pip size.</span>
-                            </span>
-                        </label>
-                        <input type="number" id="pipSize" value="0.01" step="0.01">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Example Buttons -->
-            <div class="section">
-                <div class="section-title">🎯 Quick Examples</div>
-                <div class="button-group">
-                    <button class="btn-secondary" onclick="loadExample(1)">Example A</button>
-                    <button class="btn-secondary" onclick="loadExample(2)">Example B</button>
-                    <button class="btn-primary" onclick="calculate()">Calculate</button>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div class="results">
-                <div class="section-title">📈 Results</div>
-                
-                <div class="result-row">
-                    <span class="result-label">Pip Distance to SL</span>
-                    <span class="result-value neutral" id="pipDistanceSL">-</span>
-                </div>
-                
-                <div class="result-row">
-                    <span class="result-label">Pip Distance to TP</span>
-                    <span class="result-value neutral" id="pipDistanceTP">-</span>
-                </div>
-                
-                <div class="result-row">
-                    <span class="result-label">Pip Value ($ per pip)</span>
-                    <span class="result-value neutral" id="pipValue">-</span>
-                </div>
-                
-                <div class="result-row">
-                    <span class="result-label">Loss at Stop Loss</span>
-                    <span class="result-value negative" id="lossAtSL">-</span>
-                </div>
-                
-                <div class="result-row">
-                    <span class="result-label">Profit at Take Profit</span>
-                    <span class="result-value positive" id="profitAtTP">-</span>
-                </div>
-                
-                <div class="result-row">
-                    <span class="result-label">Risk-Reward Ratio</span>
-                    <span class="result-value neutral" id="rrr">-</span>
-                </div>
-                
-                <div class="result-row" id="riskPercentRow" style="display: none;">
-                    <span class="result-label">Risk (% of Balance)</span>
-                    <span class="result-value negative" id="riskPercent">-</span>
-                </div>
-
-                <button class="copy-btn" onclick="copyResults()">📋 Copy Results</button>
             </div>
         </div>
     </div>
 
     <script>
-        // =============================================================================
-        // XAUUSD PIP CALCULATOR - FORMULAS & LOGIC
-        // =============================================================================
-        
         /*
-         * GOLD (XAUUSD) PIP CALCULATION EXPLAINED:
+         * XAUUSD PIP CALCULATOR - PREMIUM DARK THEME
          * 
-         * 1 Standard Lot = 100 troy ounces (configurable via lotMultiplier)
-         * 1 Pip = 0.01 USD movement in price (configurable via pipSize)
-         * 
-         * FORMULAS:
-         * 
-         * Ounces = Lot Size × Lot Multiplier
-         *   Example: 0.01 lot × 100 = 1 troy ounce
-         * 
-         * Pip Distance = |Price Difference| / Pip Size
-         *   Example: |2010 - 2000| / 0.01 = 1000 pips
-         * 
-         * Pip Value (USD per pip) = Ounces × Pip Size
-         *   Example: 1 oz × 0.01 = $0.01 per pip
-         * 
-         * Profit/Loss = Pip Distance × Pip Value
-         *   Example: 1000 pips × $0.01 = $10.00
-         * 
-         * Risk-Reward Ratio = TP Pip Distance / SL Pip Distance
-         *   Example: 1000 pips / 500 pips = 2:1
+         * Formula Reference:
+         * - 1 standard lot = 100 troy ounces
+         * - 0.01 lot = 1 troy ounce
+         * - Pip size = 0.01 (fixed)
+         * - Ounces = Lot Size × 100
+         * - Pip Distance = |Price Difference| / 0.01
+         * - Pip Value = Ounces × 0.01
+         * - Profit/Loss = Pip Distance × Pip Value
+         * - RRR = TP Pips / SL Pips
          */
 
-        // Load saved settings from localStorage
-        window.onload = function() {
-            loadSettings();
-            setupEventListeners();
-        };
+        let currentLot = 0.01;
+        const PIP_SIZE = 0.01;
+        const LOT_MULTIPLIER = 100;
 
-        function setupEventListeners() {
-            // Auto-calculate on input change
-            const inputs = ['entryPrice', 'stopLoss', 'takeProfit', 'accountBalance', 'customLot', 'lotMultiplier', 'pipSize', 'tradeType'];
-            inputs.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('input', calculate);
-                    el.addEventListener('change', calculate);
-                }
-            });
+        // Setup event listeners
+        document.getElementById('entryPrice').addEventListener('input', calculate);
+        document.getElementById('stopLoss').addEventListener('input', calculate);
+        document.getElementById('takeProfit').addEventListener('input', calculate);
+        document.getElementById('accountBalance').addEventListener('input', calculate);
+        document.getElementById('customLot').addEventListener('input', function() {
+            currentLot = parseFloat(this.value) || 0.01;
+            calculate();
+        });
 
-            // Handle lot size radio buttons
-            document.querySelectorAll('input[name="lotSize"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const customInput = document.getElementById('customLot');
-                    if (this.value === 'custom') {
-                        customInput.disabled = false;
-                        customInput.focus();
-                    } else {
-                        customInput.disabled = true;
-                    }
-                    calculate();
-                });
-            });
-        }
-
-        function getLotSize() {
-            const selectedRadio = document.querySelector('input[name="lotSize"]:checked');
-            if (selectedRadio.value === 'custom') {
-                return parseFloat(document.getElementById('customLot').value) || 0;
-            }
-            return parseFloat(selectedRadio.value);
-        }
-
-        function calculate() {
-            // Get input values
-            const tradeType = document.getElementById('tradeType').value;
-            const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-            const stopLoss = parseFloat(document.getElementById('stopLoss').value);
-            const takeProfit = parseFloat(document.getElementById('takeProfit').value);
-            const accountBalance = parseFloat(document.getElementById('accountBalance').value);
-            const lotSize = getLotSize();
-            const lotMultiplier = parseFloat(document.getElementById('lotMultiplier').value) || 100;
-            const pipSize = parseFloat(document.getElementById('pipSize').value) || 0.01;
-
-            // Validate inputs
-            let isValid = true;
+        function selectLot(lot) {
+            document.querySelectorAll('.lot-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             
-            if (!entryPrice || entryPrice <= 0) {
-                document.getElementById('entryError').classList.add('show');
-                document.getElementById('entryPrice').classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('entryError').classList.remove('show');
-                document.getElementById('entryPrice').classList.remove('error');
-            }
-
-            if (!stopLoss || stopLoss <= 0) {
-                document.getElementById('slError').classList.add('show');
-                document.getElementById('stopLoss').classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('slError').classList.remove('show');
-                document.getElementById('stopLoss').classList.remove('error');
-            }
-
-            if (!takeProfit || takeProfit <= 0) {
-                document.getElementById('tpError').classList.add('show');
-                document.getElementById('takeProfit').classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('tpError').classList.remove('show');
-                document.getElementById('takeProfit').classList.remove('error');
-            }
-
-            if (!isValid) return;
-
-            // Validate SL/TP logic and show warning
-            let warning = false;
-            if (tradeType === 'buy') {
-                if (stopLoss >= entryPrice || takeProfit <= entryPrice) {
-                    warning = true;
-                }
-            } else { // sell
-                if (stopLoss <= entryPrice || takeProfit >= entryPrice) {
-                    warning = true;
-                }
-            }
-
-            if (warning) {
-                document.getElementById('validationWarning').classList.add('show');
-            } else {
-                document.getElementById('validationWarning').classList.remove('show');
-            }
-
-            // Calculate ounces from lot size
-            // Formula: Ounces = Lot Size × Lot Multiplier
-            const ounces = lotSize * lotMultiplier;
-
-            // Calculate pip distances
-            // Formula: Pip Distance = |Price Difference| / Pip Size
-            const slPriceDiff = Math.abs(entryPrice - stopLoss);
-            const tpPriceDiff = Math.abs(entryPrice - takeProfit);
+            const customInput = document.getElementById('customLot');
             
-            const pipDistanceSL = slPriceDiff / pipSize;
-            const pipDistanceTP = tpPriceDiff / pipSize;
-
-            // Calculate pip value (USD per pip)
-            // Formula: Pip Value = Ounces × Pip Size
-            const pipValueUSD = ounces * pipSize;
-
-            // Calculate profit and loss in USD
-            // Formula: USD = Pip Distance × Pip Value
-            const lossAtSL = pipDistanceSL * pipValueUSD;
-            const profitAtTP = pipDistanceTP * pipValueUSD;
-
-            // Calculate Risk-Reward Ratio
-            // Formula: RRR = TP Pips / SL Pips
-            const rrr = pipDistanceSL > 0 ? (pipDistanceTP / pipDistanceSL) : 0;
-
-            // Calculate risk percentage if account balance provided
-            let riskPercent = 0;
-            if (accountBalance && accountBalance > 0) {
-                riskPercent = (lossAtSL / accountBalance) * 100;
-                document.getElementById('riskPercentRow').style.display = 'flex';
-                document.getElementById('riskPercent').textContent = riskPercent.toFixed(2) + '%';
+            if (lot === 'custom') {
+                customInput.style.display = 'block';
+                customInput.focus();
+                currentLot = parseFloat(customInput.value) || 0.01;
             } else {
-                document.getElementById('riskPercentRow').style.display = 'none';
+                customInput.style.display = 'none';
+                currentLot = lot;
             }
-
-            // Display results
-            document.getElementById('pipDistanceSL').textContent = pipDistanceSL.toFixed(2) + ' pips';
-            document.getElementById('pipDistanceTP').textContent = pipDistanceTP.toFixed(2) + ' pips';
-            document.getElementById('pipValue').textContent = '$' + pipValueUSD.toFixed(4);
-            document.getElementById('lossAtSL').textContent = '-$' + lossAtSL.toFixed(2);
-            document.getElementById('profitAtTP').textContent = '+$' + profitAtTP.toFixed(2);
-            document.getElementById('rrr').textContent = rrr.toFixed(2) + ' : 1';
-
-            // Save settings to localStorage
-            saveSettings();
-        }
-
-        function loadExample(num) {
-            if (num === 1) {
-                // Example A: Entry 2000, SL 1995, TP 2010, Lot 0.01
-                document.getElementById('tradeType').value = 'buy';
-                document.getElementById('entryPrice').value = '2000.00';
-                document.getElementById('stopLoss').value = '1995.00';
-                document.getElementById('takeProfit').value = '2010.00';
-                document.getElementById('lot001').checked = true;
-                document.getElementById('customLot').disabled = true;
-                document.getElementById('accountBalance').value = '';
-            } else if (num === 2) {
-                // Example B: Entry 2000, SL 1999.50, TP 2005.50, Lot 0.1
-                document.getElementById('tradeType').value = 'buy';
-                document.getElementById('entryPrice').value = '2000.00';
-                document.getElementById('stopLoss').value = '1999.50';
-                document.getElementById('takeProfit').value = '2005.50';
-                document.getElementById('lot01').checked = true;
-                document.getElementById('customLot').disabled = true;
-                document.getElementById('accountBalance').value = '10000';
-            }
+            
             calculate();
         }
 
-        function toggleSettings() {
-            const content = document.getElementById('settingsContent');
-            const arrow = document.getElementById('settingsArrow');
-            content.classList.toggle('show');
-            arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+        function calculate() {
+            const entry = parseFloat(document.getElementById('entryPrice').value);
+            const sl = parseFloat(document.getElementById('stopLoss').value);
+            const tp = parseFloat(document.getElementById('takeProfit').value);
+            const balance = parseFloat(document.getElementById('accountBalance').value);
+
+            if (!entry || !sl || !tp || currentLot <= 0) {
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="signal-box">
+                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <div class="empty-state">
+                            Enter all required fields to generate signal...
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Auto-detect direction: SL < Entry = BUY, SL > Entry = SELL
+            const direction = sl < entry ? 'BUY' : 'SELL';
+
+            // Calculate ounces
+            const ounces = currentLot * LOT_MULTIPLIER;
+
+            // Calculate pip distances
+            const slPriceDiff = Math.abs(entry - sl);
+            const tpPriceDiff = Math.abs(entry - tp);
+            
+            const pipDistanceSL = slPriceDiff / PIP_SIZE;
+            const pipDistanceTP = tpPriceDiff / PIP_SIZE;
+
+            // Calculate pip value
+            const pipValue = ounces * PIP_SIZE;
+
+            // Calculate profit/loss
+            const lossAtSL = pipDistanceSL * pipValue;
+            const profitAtTP = pipDistanceTP * pipValue;
+
+            // Calculate RRR
+            const rrr = pipDistanceSL > 0 ? (pipDistanceTP / pipDistanceSL) : 0;
+
+            // Calculate risk percentage
+            let riskPercentHTML = '';
+            if (balance && balance > 0) {
+                const riskPct = (lossAtSL / balance) * 100;
+                riskPercentHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">Risk % Balance</div>
+                        <div class="stat-value" style="color: #ff6b6b;">${riskPct.toFixed(2)}%</div>
+                    </div>
+                `;
+            }
+
+            // Generate premium signal display
+            const html = `
+                <div class="signal-box">
+                    <div class="signal-header">🔥 ShadowSpider FX Signal 🔥</div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Pair</span>
+                        <span class="signal-value">XAUUSD</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Direction</span>
+                        <span class="signal-value ${direction === 'BUY' ? 'direction-buy' : 'direction-sell'}">${direction}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Entry</span>
+                        <span class="signal-value">${entry.toFixed(3)}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Stop Loss</span>
+                        <span class="signal-value">${sl.toFixed(3)}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Take Profit</span>
+                        <span class="signal-value">${tp.toFixed(3)}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Risk</span>
+                        <span class="signal-value risk-value">-$${lossAtSL.toFixed(2)}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">Reward</span>
+                        <span class="signal-value reward-value">+$${profitAtTP.toFixed(2)}</span>
+                    </div>
+                    
+                    <div class="signal-line">
+                        <span class="signal-label">RR</span>
+                        <span class="signal-value">${rrr.toFixed(2)} : 1</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Pips to SL</div>
+                            <div class="stat-value">${pipDistanceSL.toFixed(1)}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Pips to TP</div>
+                            <div class="stat-value">${pipDistanceTP.toFixed(1)}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Pip Value</div>
+                            <div class="stat-value">$${pipValue.toFixed(4)}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Lot Size</div>
+                            <div class="stat-value">${currentLot.toFixed(2)}</div>
+                        </div>
+                        ${riskPercentHTML}
+                    </div>
+
+                    <button class="copy-btn" onclick="copySignal()">
+                        <svg style="width: 18px; height: 18px; display: inline; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Copy Signal
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('resultsContainer').innerHTML = html;
         }
 
-        function copyResults() {
-            const entry = document.getElementById('entryPrice').value;
-            const sl = document.getElementById('stopLoss').value;
-            const tp = document.getElementById('takeProfit').value;
-            const lot = getLotSize();
-            const tradeType = document.getElementById('tradeType').value.toUpperCase();
+        function copySignal() {
+            const entry = parseFloat(document.getElementById('entryPrice').value);
+            const sl = parseFloat(document.getElementById('stopLoss').value);
+            const tp = parseFloat(document.getElementById('takeProfit').value);
             
-            const pipSL = document.getElementById('pipDistanceSL').textContent;
-            const pipTP = document.getElementById('pipDistanceTP').textContent;
-            const pipVal = document.getElementById('pipValue').textContent;
-            const loss = document.getElementById('lossAtSL').textContent;
-            const profit = document.getElementById('profitAtTP').textContent;
-            const rr = document.getElementById('rrr').textContent;
+            const direction = sl < entry ? 'BUY' : 'SELL';
             
-            const text = `XAUUSD ${tradeType} Trade Setup
-Entry: $${entry}
-Stop Loss: $${sl}
-Take Profit: $${tp}
-Lot Size: ${lot}
+            const ounces = currentLot * LOT_MULTIPLIER;
+            const slPriceDiff = Math.abs(entry - sl);
+            const tpPriceDiff = Math.abs(entry - tp);
+            const pipDistanceSL = slPriceDiff / PIP_SIZE;
+            const pipDistanceTP = tpPriceDiff / PIP_SIZE;
+            const pipValue = ounces * PIP_SIZE;
+            const lossAtSL = pipDistanceSL * pipValue;
+            const profitAtTP = pipDistanceTP * pipValue;
+            const rrr = pipDistanceSL > 0 ? (pipDistanceTP / pipDistanceSL) : 0;
 
-Results:
-Pip Distance to SL: ${pipSL}
-Pip Distance to TP: ${pipTP}
-Pip Value: ${pipVal}
-Loss at SL: ${loss}
-Profit at TP: ${profit}
-Risk-Reward: ${rr}`;
+            const signal = `🔥 ShadowSpider FX Signal 🔥
+Pair: XAUUSD
+Direction: ${direction}
+Entry: ${entry.toFixed(3)}
+Stop Loss: ${sl.toFixed(3)}
+Take Profit: ${tp.toFixed(3)}
+Risk: -$${lossAtSL.toFixed(2)}
+Reward: +$${profitAtTP.toFixed(2)}
+RR: ${rrr.toFixed(2)} : 1`;
 
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(signal).then(() => {
                 const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✓ Copied!';
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `
+                    <svg style="width: 18px; height: 18px; display: inline; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Copied!
+                `;
+                btn.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
+                
                 setTimeout(() => {
-                    btn.textContent = originalText;
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = 'linear-gradient(135deg, #8a4fff, #00d4ff)';
                 }, 2000);
             });
-        }
-
-        function saveSettings() {
-            const settings = {
-                tradeType: document.getElementById('tradeType').value,
-                entryPrice: document.getElementById('entryPrice').value,
-                stopLoss: document.getElementById('stopLoss').value,
-                takeProfit: document.getElementById('takeProfit').value,
-                accountBalance: document.getElementById('accountBalance').value,
-                lotSize: document.querySelector('input[name="lotSize"]:checked').value,
-                customLot: document.getElementById('customLot').value,
-                lotMultiplier: document.getElementById('lotMultiplier').value,
-                pipSize: document.getElementById('pipSize').value
-            };
-            localStorage.setItem('pipCalculatorSettings', JSON.stringify(settings));
-        }
-
-        function loadSettings() {
-            const saved = localStorage.getItem('pipCalculatorSettings');
-            if (saved) {
-                try {
-                    const settings = JSON.parse(saved);
-                    if (settings.tradeType) document.getElementById('tradeType').value = settings.tradeType;
-                    if (settings.entryPrice) document.getElementById('entryPrice').value = settings.entryPrice;
-                    if (settings.stopLoss) document.getElementById('stopLoss').value = settings.stopLoss;
-                    if (settings.takeProfit) document.getElementById('takeProfit').value = settings.takeProfit;
-                    if (settings.accountBalance) document.getElementById('accountBalance').value = settings.accountBalance;
-                    if (settings.customLot) document.getElementById('customLot').value = settings.customLot;
-                    if (settings.lotMultiplier) document.getElementById('lotMultiplier').value = settings.lotMultiplier;
-                    if (settings.pipSize) document.getElementById('pipSize').value = settings.pipSize;
-                    
-                    if (settings.lotSize) {
-                        document.querySelectorAll('input[name="lotSize"]').forEach(radio => {
-                            if (radio.value === settings.lotSize) {
-                                radio.checked = true;
-                                if (settings.lotSize === 'custom') {
-                                    document.getElementById('customLot').disabled = false;
-                                }
-                            }
-                        });
-                    }
-                    
-                    calculate();
-                } catch (e) {
-                    console.log('Could not load saved settings');
-                }
-            }
         }
     </script>
 </body>
